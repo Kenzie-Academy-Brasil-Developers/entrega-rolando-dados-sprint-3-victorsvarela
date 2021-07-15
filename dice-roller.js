@@ -13,6 +13,29 @@ const btnRollDice = document.querySelector('#rolar_dados')
 const showResult = document.getElementsByTagName('div')[7]
 const grafico = document.querySelector('#frequencia_grafico')
 
+
+// faz as barras de tamanho da frequẽncia de números px
+const criaGrafico = (tamanho) => {
+
+    const spanGrafico = document.createElement('span')
+    const barraGrafico = document.createElement('div')
+    barraGrafico.style.height = '14.8px'
+    barraGrafico.style.backgroundColor = 'black'
+    barraGrafico.style.width = `${tamanho}px`
+    barraGrafico.style.margin = '3px 0'
+    grafico.appendChild(barraGrafico)
+
+}
+
+
+const anexaUltimaRodada = (anexaDado1, anexaDado2, soma) => {
+    
+    dado1.innerText = anexaDado1
+    dado2.innerText = anexaDado2
+    
+}
+
+
 const rolarDados = () =>{
     
     showResult.innerHTML = ''
@@ -27,10 +50,14 @@ const rolarDados = () =>{
         resultDado2[i] = Math.floor(Math.random() * (6 - 1 + 1) + 1);
         somaDados[i] = resultDado1[i] + resultDado2[i];
         
-        // anexa resultado da última rolagem na tela
-        dado1.innerText = resultDado1[i]
-        dado2.innerText = resultDado2[i]
-        resultadoSoma.innerText = somaDados[i]
+        // chama função para anexa
+        // resultado da última rolagem na tela
+        // por isso do if (i === 999), para ele chamar
+        // a função se e somente se for a última rolagem
+        if (i === 999){
+            resultadoSoma.innerText = somaDados[i]
+            anexaUltimaRodada(resultDado1[i], resultDado2[i], somaDados[i])
+        }
 
         
         frequenciaNumeros[somaDados[i]] += 1
@@ -43,14 +70,9 @@ const rolarDados = () =>{
         span.innerText =  (`${j} : ${frequenciaNumeros[j]} vezes\n`)
         showResult.appendChild(span)
 
-        // faz as barras de tamanho da frequẽncia de números px
-        const spanGrafico = document.createElement('span')
-        const barraGrafico = document.createElement('div')
-        barraGrafico.style.height = '14.8px'
-        barraGrafico.style.backgroundColor = 'black'
-        barraGrafico.style.width = `${frequenciaNumeros[j]}px`
-        barraGrafico.style.margin = '3px 0'
-        grafico.appendChild(barraGrafico)
+        // chama função para criar os gráficos,
+        // passando frequencia[i] como parâmetro
+        criaGrafico(frequenciaNumeros[j])
     }
 
 
